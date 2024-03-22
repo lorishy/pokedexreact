@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const Pokedex = ({ pokedex, removeFromPokedex, clearPokedex }) => {
+const Pokedex = () => {
+
+    const [pokedex, setPokedex] = useState([]);
+
+    useEffect(() => {
+        const storedPokedex = JSON.parse(localStorage.getItem("pokedex")) || [];
+        setPokedex(storedPokedex);
+    }, []);
+
+    const removeFromPokedex = (poke) => {
+        const updatedPokedex = pokedex.filter((p) => p.id !== poke.id);
+        setPokedex(updatedPokedex);
+        localStorage.setItem("pokedex", JSON.stringify(updatedPokedex));
+    };
+
+    const clearPokedex = () => {
+        setPokedex([]);
+        localStorage.removeItem("pokedex");
+    };
     return (
         <div className="container">
             {pokedex.length === 0 ? (
